@@ -367,4 +367,133 @@ console <command>                          # remotely execute a single console c
 console                                    # start an interactive console to the remote app
 
 restart                                    # restart app servers
-logs                                       # fetch rec
+logs                                       # fetch recent log output for debugging
+logs:cron                                  # fetch cron log output
+
+maintenance:on                             # put the app into maintenance mode
+maintenance:off                            # take the app out of maintenance mode
+
+config                                     # display the app's config vars (environment)
+config:add key=val [...]                   # add one or more config vars
+config:remove key [...]                    # remove one or more config vars
+config:clear                               # clear user-set vars and reset to default
+
+stack                                      # show current stack and list of available stacks
+stack:migrate                              # prepare migration of this app to a new stack
+
+db:pull [<database_url>]                   # pull the app's database into a local database
+db:push [<database_url>]                   # push a local database into the app's remote database
+
+bundles                                    # list bundles for the app
+bundles:capture [<bundle>]                 # capture a bundle of the app's code and data
+bundles:download                           # download most recent app bundle as a tarball
+bundles:download <bundle>                  # download the named bundle
+bundles:destroy <bundle>                   # destroy the named bundle
+
+addons                                     # list installed addons
+addons:info                                # list all available addons
+addons:add name [key=value]                # install addon (with zero or more config vars)
+addons:remove name                         # uninstall an addons
+addons:clear                               # uninstall all addons
+
+destroy                                    # destroy the app permanently
+
+=== Plugins
+
+plugins                                    # list installed plugins
+plugins:install <url>                      # install the plugin from the specified git url
+plugins:uninstall <url/name>               # remove the specified plugin
+
+=== pgbackups
+
+pgbackups                                  # list captured backups
+pgbackups:capture [<DB_ID>]                # capture a backup from database ID (default: DATABASE_URL)
+pgbackups:url [<BACKUP_ID>]                # get a temporary URL for a backup
+pgbackups:destroy <BACKUP_ID>              # destroy a backup
+pgbackups:restore <BACKUP_ID> --db <DB_ID> # restore the database ID (default: DATABASE_URL) from a backup
+pgbackups:restore <url> --db <DB_ID>       # restore the database ID (default: DATABASE_URL) from a URL
+
+=== Example:
+
+ rails myapp
+ cd myapp
+ git init
+ git add .
+ git commit -m "my new app"
+ heroku create
+ git push heroku master
+
+dani@dani-laptop:~/ruby/proba/teszt$ git add.
+git: 'add.' is not a git command. See 'git --help'.
+
+Did you mean this?
+	add
+dani@dani-laptop:~/ruby/proba/teszt$ git add.  .
+dani@dani-laptop:~/ruby/proba/teszt$ ^C
+dani@dani-laptop:~/ruby/proba/teszt$ git commit -m "my new app"" " " " " " " " " " n"e"t"
+[master 8849dfd] net
+ 6 files changed, 365 insertions(+), 20 deletions(-)
+dani@dani-laptop:~/ruby/proba/teszt$ heroku create
+Creating deep-snow-71...... done
+Created http://deep-snow-71.heroku.com/ | git@heroku.com:deep-snow-71.git
+dani@dani-laptop:~/ruby/proba/teszt$ git push heroku master
+Counting objects: 53, done.
+Delta compression using up to 2 threads.
+Compressing objects:   2% (1/34)   Compressing objects:   5% (2/34)   Compressing objects:   8% (3/34)   Compressing objects:  11% (4/34)   Compressing objects:  14% (5/34)   Compressing objects:  17% (6/34)   Compressing objects:  20% (7/34)   Compressing objects:  23% (8/34)   Compressing objects:  26% (9/34)   Compressing objects:  29% (10/34)   Compressing objects:  32% (11/34)   Compressing objects:  35% (12/34)   Compressing objects:  38% (13/34)   Compressing objects:  41% (14/34)   Compressing objects:  44% (15/34)   Compressing objects:  47% (16/34)   Compressing objects:  50% (17/34)   Compressing objects:  52% (18/34)   Compressing objects:  55% (19/34)   Compressing objects:  58% (20/34)   Compressing objects:  61% (21/34)   Compressing objects:  64% (22/34)   Compressing objects:  67% (23/34)   Compressing objects:  70% (24/34)   Compressing objects:  73% (25/34)   Compressing objects:  76% (26/34)   Compressing objects:  79% (27/34)   Compressing objects:  82% (28/34)   Compressing objects:  85% (29/34)   Compressing objects:  88% (30/34)   Compressing objects:  91% (31/34)   Compressing objects:  94% (32/34)   Compressing objects:  97% (33/34)   Compressing objects: 100% (34/34)   Compressing objects: 100% (34/34), done.
+Writing objects:   2% (1/34)   Writing objects:   5% (2/34)   Writing objects:   8% (3/34)   Writing objects:  11% (4/34)   Writing objects:  14% (5/34)   Writing objects:  17% (6/34)   Writing objects:  20% (7/34)   Writing objects:  23% (8/34)   Writing objects:  26% (9/34)   Writing objects:  29% (10/34)   Writing objects:  32% (11/34)   Writing objects:  35% (12/34)   Writing objects:  38% (13/34)   Writing objects:  41% (14/34)   Writing objects:  44% (15/34)   Writing objects:  47% (16/34)   Writing objects:  50% (17/34)   Writing objects:  52% (18/34)   Writing objects:  55% (19/34)   Writing objects:  58% (20/34)   Writing objects:  61% (21/34)   Writing objects:  64% (22/34)   Writing objects:  67% (23/34)   Writing objects:  70% (24/34)   Writing objects:  73% (25/34)   Writing objects:  76% (26/34)   Writing objects:  79% (27/34)   Writing objects:  82% (28/34)   Writing objects:  85% (29/34)   Writing objects:  88% (30/34)   Writing objects:  91% (31/34)   Writing objects:  94% (32/34)   Writing objects:  97% (33/34)   Writing objects: 100% (34/34)   Writing objects: 100% (34/34), 9.48 KiB, done.
+Total 34 (delta 21), reused 0 (delta 0)
+
+-----> Heroku receiving push
+-----> Rails app detected
+-----> Detected Rails is not set to serve static_assets
+       Installing rails3_serve_static_assets... done
+-----> Gemfile detected, running Bundler version 1.0.3
+       Unresolved dependencies detected; Installing...
+       Fetching source index for http://rubygems.org/
+       Installing rake (0.8.7) 
+       Installing abstract (1.0.0) 
+       Installing activesupport (3.0.1) 
+       Installing builder (2.1.2) 
+       Installing i18n (0.4.1) 
+       Installing activemodel (3.0.1) 
+       Installing erubis (2.6.6) 
+       Installing rack (1.2.1) 
+       Installing rack-mount (0.6.13) 
+       Installing rack-test (0.5.6) 
+       Installing tzinfo (0.3.23) 
+       Installing actionpack (3.0.1) 
+       Installing mime-types (1.16) 
+       Installing polyglot (0.3.1) 
+       Installing treetop (1.4.8) 
+       Installing mail (2.2.7) 
+       Installing actionmailer (3.0.1) 
+       Installing arel (1.0.1) 
+       Installing activerecord (3.0.1) 
+       Installing activeresource (3.0.1) 
+       Installing annotate-models (1.0.4) 
+       Installing diff-lcs (1.1.2) 
+       Installing factory_girl (1.3.2) 
+       Using bundler (1.0.3) 
+       Installing thor (0.14.3) 
+       Installing railties (3.0.1) 
+       Installing rails (3.0.1) 
+       Installing factory_girl_rails (1.0) 
+       Installing faker (0.3.1) 
+       Installing gravatar_image_tag (0.1.0) 
+       Installing nokogiri (1.4.3.1) with native extensions 
+       Installing rspec-core (2.0.1) 
+       Installing rspec-expectations (2.0.1) 
+       Installing rspec-mocks (2.0.1) 
+       Installing rspec (2.0.1) 
+       Installing rspec-rails (2.0.1) 
+       Installing sqlite3-ruby (1.3.1) with native extensions 
+       Installing webrat (0.7.1) 
+       Installing will_paginate (3.0.pre2) 
+       [32mYour bundle is complete! It was installed into ./.bundle/gems[0m
+       Compiled slug size is 18.2MB
+-----> Launching... done
+       http://danielblog.heroku.com deployed to Heroku
+
+To git@heroku.com:danielblog.git
+   b51fd38..8849dfd  master -> master
+dani@dani-laptop:~/ruby/proba/teszt$ git push heroku masterheroku cre
