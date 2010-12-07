@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate, :only => [:edit, :update]
+  before_filter :authenticate, :only => [:edit, :update, :destroy]
   before_filter :correct_user, :only => [:edit, :update]
   before_filter :admin_user,   :only => :destroy  
   
@@ -19,8 +19,6 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
-
-
   def new
     @user = User.new
     @title = "Sign up"
@@ -38,11 +36,13 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
-private
+
+
   def edit
     @user = User.find(params[:id])
     @title = "Edit user"
   end
+
 
   def update
     @user = User.find(params[:id])
@@ -55,10 +55,17 @@ private
     end
   end
 
+private
+
     def authenticate
       deny_access unless signed_in?
     end
+
     def admin_user
       redirect_to(root_path) unless current_user.admin?
+    end
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_path) unless current_user?(@user)
     end
 end
